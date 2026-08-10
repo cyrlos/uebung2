@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Lagerverwaltung.Models.StockMovement>
+
+@{
+    ViewData["Title"] = "Buchungshistorie";
+}
+
+<h1>Buchungshistorie</h1>
+
+<a asp-action="Index" class="btn btn-secondary mb-3">
+    Zurück zum Bestand
+</a>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Artikel</th>
+            <th>Typ</th>
+            <th>Menge</th>
+            <th>Preis</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var movement in Model)
+        {
+            <tr>
+                <td>@movement.Date.ToString("dd.MM.yyyy")</td>
+
+                <td>
+                    @movement.Article?.Name
+                </td>
+
+                <td>
+                    @if (movement.Type == Lagerverwaltung.Models.StockMovementType.In)
+                    {
+                        <span class="text-success">
+                            Wareneingang
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">
+                            Warenausgang
+                        </span>
+                    }
+                </td>
+
+                <td>@movement.Quantity</td>
+
+                <td>@movement.Price.ToString("C")</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

@@ -1,0 +1,104 @@
+@model Lagerverwaltung.Models.CompanySettings
+
+@{
+    ViewData["Title"] = "Firmendaten";
+}
+
+<h1>Firmendaten</h1>
+
+<form asp-action="Index" method="post">
+
+    <div asp-validation-summary="All"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="CompanyName"
+               class="form-label">
+            Firmenname
+        </label>
+
+        <input asp-for="CompanyName"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Address"
+               class="form-label">
+            Adresse
+        </label>
+
+        <input asp-for="Address"
+               class="form-control" />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <label asp-for="PostalCode"
+                   class="form-label">
+                PLZ
+            </label>
+
+            <input asp-for="PostalCode"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-8 mb-3">
+            <label asp-for="City"
+                   class="form-label">
+                Ort
+            </label>
+
+            <input asp-for="City"
+                   class="form-control" />
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Country"
+               class="form-label">
+            Land
+        </label>
+
+        <input asp-for="Country"
+               class="form-control"
+               value="Österreich" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="VatNumber"
+               class="form-label">
+            UID-Nummer
+        </label>
+
+        <input asp-for="VatNumber"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Iban"
+               class="form-label">
+            IBAN
+        </label>
+
+        <input asp-for="Iban"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Bic"
+               class="form-label">
+            BIC
+        </label>
+
+        <input asp-for="Bic"
+               class="form-control" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Speichern
+    </button>
+
+</form>

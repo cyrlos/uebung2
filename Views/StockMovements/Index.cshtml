@@ -1,0 +1,69 @@
+@model IEnumerable<Lagerverwaltung.Models.Article>
+
+@{
+    ViewData["Title"] = "Lagerbestand";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h1>Lagerbestand</h1>
+
+    <div>
+        <a asp-action="Create"
+           class="btn btn-primary">
+            + Buchung
+        </a>
+
+        <a asp-action="History"
+           class="btn btn-secondary">
+            Historie
+        </a>
+    </div>
+
+</div>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Artikelnummer</th>
+            <th>Artikel</th>
+            <th>Bestand</th>
+            <th>Gesamtwert</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var article in Model)
+        {
+            var incoming = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.In)
+                .Sum(s => s.Quantity);
+
+            var outgoing = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.Out)
+                .Sum(s => s.Quantity);
+
+            var stock = incoming - outgoing;
+
+            var lastPurchase = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.In)
+                .OrderByDescending(s => s.Date)
+                .FirstOrDefault();
+
+            var totalValue = lastPurchase != null
+                ? stock * lastPurchase.Price
+                : 0;
+
+            <tr>
+                <td>@article.ArticleNumber</td>
+                <td>@article.Name</td>
+                <td>@stock</td>
+                <td>@totalValue.ToString("C")</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

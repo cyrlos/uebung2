@@ -1,0 +1,48 @@
+@model IEnumerable<Lagerverwaltung.Models.Article>
+
+@{
+    ViewData["Title"] = "Lagerbericht";
+}
+
+<h1>Lagerbericht</h1>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Artikelnummer</th>
+            <th>Artikelname</th>
+            <th>Menge</th>
+            <th>Gesamtwert</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var article in Model)
+        {
+            var incoming = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.In)
+                .Sum(s => s.Quantity);
+
+            var outgoing = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.Out)
+                .Sum(s => s.Quantity);
+
+            var stock = incoming - outgoing;
+
+            var totalValue = article.StockMovements
+                .Where(s => s.Type == Lagerverwaltung.Models.StockMovementType.In)
+                .Sum(s => s.Quantity * s.Price);
+
+            <tr>
+                <td>@article.ArticleNumber</td>
+                <td>@article.Name</td>
+                <td>@stock</td>
+                <td>@totalValue.ToString("C")</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

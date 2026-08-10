@@ -1,0 +1,257 @@
+@model Lagerverwaltung.Models.Invoice
+
+@{
+    ViewData["Title"] = "Rechnung " + Model.InvoiceNumber;
+
+    var company = ViewBag.Company as Lagerverwaltung.Models.CompanySettings;
+}
+
+<div class="container mt-4">
+
+    <!-- Kopfbereich -->
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+
+            @if (company != null)
+            {
+                <h4>@company.CompanyName</h4>
+
+                <div>
+                    @company.Address<br />
+                    @company.PostalCode @company.City<br />
+                    @company.Country
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(company.VatNumber))
+                {
+                    <div>
+                        UID: @company.VatNumber
+                    </div>
+                }
+            }
+
+        </div>
+
+        <div class="col-md-6 text-end">
+
+            <h1>RECHNUNG</h1>
+
+            <strong>@Model.InvoiceNumber</strong>
+
+            <br />
+
+            Rechnungsdatum:
+            @Model.InvoiceDate.ToString("dd.MM.yyyy")
+
+            <br />
+
+            Leistungsdatum:
+            @Model.ServiceDate.ToString("dd.MM.yyyy")
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <!-- Kunde -->
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+
+            <h5>Rechnungsempfänger</h5>
+
+            <strong>@Model.CustomerName</strong>
+
+            <br />
+
+            @Model.CustomerAddress
+
+            <br />
+
+            @Model.CustomerPostalCode @Model.CustomerCity
+
+            <br />
+
+            @Model.CustomerCountry
+
+            @if (!string.IsNullOrWhiteSpace(Model.CustomerVatNumber))
+            {
+                <br />
+
+                <span>
+                    UID: @Model.CustomerVatNumber
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- Positionen -->
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+
+                <th>Beschreibung</th>
+
+                <th class="text-end">
+                    Menge
+                </th>
+
+                <th class="text-end">
+                    Einzelpreis netto
+                </th>
+
+                <th class="text-end">
+                    USt.
+                </th>
+
+                <th class="text-end">
+                    Gesamt
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+
+                    <td>
+                        @item.Description
+                    </td>
+
+                    <td class="text-end">
+                        @item.Quantity
+                    </td>
+
+                    <td class="text-end">
+                        @item.UnitPrice.ToString("C")
+                    </td>
+
+                    <td class="text-end">
+                        @item.VatRate %
+                    </td>
+
+                    <td class="text-end">
+                        @item.GrossAmount.ToString("C")
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <!-- Summen -->
+    <div class="row justify-content-end">
+
+        <div class="col-md-5">
+
+            <table class="table">
+
+                <tr>
+
+                    <th>
+                        Nettobetrag
+                    </th>
+
+                    <td class="text-end">
+                        @Model.NetTotal.ToString("C")
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+                        Umsatzsteuer
+                    </th>
+
+                    <td class="text-end">
+                        @Model.VatTotal.ToString("C")
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+                        Gesamtbetrag
+                    </th>
+
+                    <td class="text-end">
+
+                        <strong>
+                            @Model.GrossTotal.ToString("C")
+                        </strong>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Zahlungsbedingungen -->
+    <div class="mt-4">
+
+        <strong>
+            Zahlungsbedingungen:
+        </strong>
+
+        @Model.PaymentTerms
+
+    </div>
+
+    <!-- Bankverbindung -->
+    @if (company != null)
+    {
+        <div class="mt-4 pt-3 border-top">
+
+            <h5>Bankverbindung</h5>
+
+            @if (!string.IsNullOrWhiteSpace(company.Iban))
+            {
+                <div>
+                    <strong>IBAN:</strong>
+                    @company.Iban
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(company.Bic))
+            {
+                <div>
+                    <strong>BIC:</strong>
+                    @company.Bic
+                </div>
+            }
+
+        </div>
+    }
+
+    <!-- Buttons -->
+    <div class="mt-4">
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Zurück
+        </a>
+        <!-- ggf. löschen-->
+        <button onclick="window.print()"
+                class="btn btn-primary">
+            Drucken
+        </button>
+
+    </div>
+
+</div>

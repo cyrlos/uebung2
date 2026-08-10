@@ -1,0 +1,185 @@
+@model Lagerverwaltung.Models.Invoice
+
+@{
+    ViewData["Title"] = "Rechnung erstellen";
+}
+
+<h1>Rechnung erstellen</h1>
+
+<form asp-action="Create" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <h3>Rechnungsdaten</h3>
+
+    <div class="mb-3">
+        <label asp-for="InvoiceDate" class="form-label">
+            Rechnungsdatum
+        </label>
+
+        <input asp-for="InvoiceDate"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ServiceDate" class="form-label">
+            Leistungsdatum
+        </label>
+
+        <input asp-for="ServiceDate"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <h3>Kunde</h3>
+
+    <div class="mb-3">
+        <label asp-for="CustomerName" class="form-label">
+            Name
+        </label>
+
+        <input asp-for="CustomerName"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CustomerAddress" class="form-label">
+            Adresse
+        </label>
+
+        <input asp-for="CustomerAddress"
+               class="form-control" />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <label asp-for="CustomerPostalCode"
+                   class="form-label">
+                PLZ
+            </label>
+
+            <input asp-for="CustomerPostalCode"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-8 mb-3">
+            <label asp-for="CustomerCity"
+                   class="form-label">
+                Ort
+            </label>
+
+            <input asp-for="CustomerCity"
+                   class="form-control" />
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CustomerCountry"
+               class="form-label">
+            Land
+        </label>
+
+        <input asp-for="CustomerCountry"
+               class="form-control"
+               value="Österreich" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CustomerVatNumber"
+               class="form-label">
+            UID-Nummer
+        </label>
+
+        <input asp-for="CustomerVatNumber"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PaymentTerms"
+               class="form-label">
+            Zahlungsbedingungen
+        </label>
+
+        <input asp-for="PaymentTerms"
+               class="form-control" />
+    </div>
+
+    <h3>Rechnungspositionen</h3>
+
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        <div class="border p-3 mb-3">
+
+            <h5>Position @(i + 1)</h5>
+
+            <div class="mb-3">
+                <label asp-for="Items[i].Description"
+                       class="form-label">
+                    Beschreibung
+                </label>
+
+                <input asp-for="Items[i].Description"
+                       class="form-control" />
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label asp-for="Items[i].Quantity"
+                           class="form-label">
+                        Menge
+                    </label>
+
+                    <input asp-for="Items[i].Quantity"
+                           type="number"
+                           step="0.01"
+                           min="0.01"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Items[i].UnitPrice"
+                           class="form-label">
+                        Einzelpreis netto
+                    </label>
+
+                    <input asp-for="Items[i].UnitPrice"
+                           type="number"
+                           step="0.01"
+                           min="0"
+                           class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Items[i].VatRate"
+                           class="form-label">
+                        USt. %
+                    </label>
+
+                    <input asp-for="Items[i].VatRate"
+                           type="number"
+                           step="0.01"
+                           min="0"
+                           class="form-control"
+                           value="20" />
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    <button type="submit"
+            class="btn btn-primary">
+        Rechnung erstellen
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Abbrechen
+    </a>
+
+</form>

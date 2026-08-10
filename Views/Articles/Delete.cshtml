@@ -1,0 +1,56 @@
+@model Lagerverwaltung.Models.Article
+
+@{
+    ViewData["Title"] = "Artikel löschen";
+}
+
+<h1>Artikel löschen</h1>
+
+<div class="alert alert-danger">
+    Möchtest du diesen Artikel wirklich löschen?
+</div>
+
+<dl class="row">
+
+    <dt class="col-sm-3">
+        Artikelnummer
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.ArticleNumber
+    </dd>
+
+    <dt class="col-sm-3">
+        Name
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Name
+    </dd>
+
+    <dt class="col-sm-3">
+        Beschreibung
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Description
+    </dd>
+
+</dl>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Löschen
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Abbrechen
+    </a>
+
+</form>

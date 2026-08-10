@@ -1,0 +1,49 @@
+@model IEnumerable<Lagerverwaltung.Models.Article>
+
+@{
+    ViewData["Title"] = "Artikel";
+}
+
+<h1>Artikel</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Artikel hinzufügen
+</a>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Artikelnummer</th>
+            <th>Name</th>
+            <th>Beschreibung</th>
+            <th>Aktionen</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>@article.ArticleNumber</td>
+                <td>@article.Name</td>
+                <td>@article.Description</td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@article.Id"
+                       class="btn btn-warning btn-sm">
+                        Bearbeiten
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@article.Id"
+                       class="btn btn-danger btn-sm">
+                        Löschen
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

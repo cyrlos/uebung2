@@ -1,0 +1,82 @@
+@model IEnumerable<Lagerverwaltung.Models.Invoice>
+
+@{
+    ViewData["Title"] = "Rechnungen";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h1>Rechnungen</h1>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Neue Rechnung
+    </a>
+
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Es wurden noch keine Rechnungen erstellt.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Rechnungsnummer</th>
+                <th>Datum</th>
+                <th>Kunde</th>
+                <th>Gesamtbetrag</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var invoice in Model)
+            {
+                <tr>
+
+                    <td>
+                        @invoice.InvoiceNumber
+                    </td>
+
+                    <td>
+                        @invoice.InvoiceDate.ToString("dd.MM.yyyy")
+                    </td>
+
+                    <td>
+                        @invoice.CustomerName
+                    </td>
+
+                    <td>
+                        @invoice.GrossTotal.ToString("C")
+                    </td>
+
+                    <td class="text-end">
+
+                        <a asp-action="Details"
+                           asp-route-id="@invoice.Id"
+                           class="btn btn-sm btn-primary">
+                            Ansehen
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@invoice.Id"
+                           class="btn btn-sm btn-danger">
+                            Löschen
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
